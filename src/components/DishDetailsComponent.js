@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
     function RenderDish({dish}) {
         if (dish != null)
             return(
-                <div className="col-12 col-md-5 m-1">
+                <div>
                     <Card>
                         <CardImg top src={dish.image} alt={dish.name} />
                         <CardBody>
@@ -24,14 +24,14 @@ import { Link } from 'react-router-dom';
             );
     }
 
-    function RenderComments({Comments}) {
-        const cmnts = Comments.map((cmnt)=> {
+    function RenderComments({comments}) {
+        const cmnts = comments.map((cmnt)=> {
             return (
                 <p>{cmnt.comment}<br/><br/>--{cmnt.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(cmnt.date)))} </p>
             );
         });
         return(
-            <div className="col-12 col-md-5 m-1">
+            <div>
                 <h4>Comments</h4>
                 {cmnts}
             </div>
