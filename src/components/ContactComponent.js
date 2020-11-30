@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Breadcrumb, BreadcrumbItem,
     Button, Row, Col, Label } from 'reactstrap';
-import { Control, Form, Errors, actions } from 'react-redux-form';
+import { Control, Form, Errors } from 'react-redux-form';
 import { Link } from 'react-router-dom';
 
 const required = (val) => val && val.length;
@@ -68,7 +68,7 @@ class Contact extends Component {
                         <div className="btn-group" role="group">
                             <a role="button" className="btn btn-primary" href="tel:+85212345678"><i
                                 className="fa fa-phone"></i> Call</a>
-                            <a role="button" className="btn btn-info"><i className="fa fa-skype"></i> Skype</a>
+                            <a role="button" className="btn btn-info" href="skype"><i className="fa fa-skype"></i> Skype</a>
                             <a role="button" className="btn btn-success" href="mailto:confusion@food.net"><i
                                 className="fa fa-envelope-o"></i> Email</a>
                         </div>
@@ -88,8 +88,8 @@ class Contact extends Component {
                                                   className="form-control"
                                                   validators={{
                                                       required, minLength: minLength(3), maxLength: maxLength(15)
-                                                  }}
-                                    />
+                                                  }}>
+                                    </Control.text>
                                     <Errors
                                         className="text-danger"
                                         model=".firstname"
@@ -110,8 +110,8 @@ class Contact extends Component {
                                                   className="form-control"
                                                   validators={{
                                                       required, minLength: minLength(3), maxLength: maxLength(15)
-                                                  }}
-                                    />
+                                                  }}>
+                                    </Control.text>
                                     <Errors
                                         className="text-danger"
                                         model=".lastname"
@@ -132,8 +132,8 @@ class Contact extends Component {
                                                   className="form-control"
                                                   validators={{
                                                       required, minLength: minLength(3), maxLength: maxLength(15), isNumber
-                                                  }}
-                                    />
+                                                  }}>
+                                    </Control.text>
                                     <Errors
                                         className="text-danger"
                                         model=".telnum"
@@ -155,8 +155,8 @@ class Contact extends Component {
                                                   className="form-control"
                                                   validators={{
                                                       required, validEmail
-                                                  }}
-                                    />
+                                                  }}>
+                                    </Control.text>
                                     <Errors
                                         className="text-danger"
                                         model=".email"
@@ -173,13 +173,14 @@ class Contact extends Component {
                                     <div className="form-check">
                                         <Label check>
                                             <Control.checkbox model=".agree" name="agree"
-                                                              className="form-check-input"
-                                            /> {' '}
+                                                              className="form-check-input">
+                                            </Control.checkbox>{' '}
                                             <strong>May we contact you?</strong>
                                         </Label>
                                     </div>
                                 </Col>
                                 <Col md={{size: 3, offset: 1}}>
+                                    {/* eslint-disable-next-line react/jsx-pascal-case */}
                                     <Control.select model=".contactType" name="contactType"
                                                     className="form-control">
                                         <option>Tel.</option>
