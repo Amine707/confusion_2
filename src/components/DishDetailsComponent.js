@@ -5,6 +5,8 @@ import {
 } from 'reactstrap';
 import { Loading } from './LoadingComponent';
 import { Link } from 'react-router-dom';
+import { baseUrl } from '../Shared/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
     class Commentform extends Component {
 
@@ -48,7 +50,7 @@ import { Link } from 'react-router-dom';
         
         handleSubmit(event) {
             this.toggleModal();
-            this.props.addComment(this.props.dishId, this.select.value, this.state.Name, this.Comment.value);
+            this.props.postComment(this.props.dishId, this.select.value, this.state.Name, this.Comment.value);
         }
 
         render() {
@@ -109,15 +111,19 @@ import { Link } from 'react-router-dom';
         if (dish != null)
             return(
                 <div>
-                    <Card>
-                        <CardImg top src={dish.image} alt={dish.name} />
-                        <CardBody>
-                            <CardTitle>{dish.name}</CardTitle>
-                            <CardText>
-                                <p>{dish.description}</p>
-                            </CardText>
-                        </CardBody>
-                    </Card>
+                    <FadeTransform
+                        in
+                        transformProps={{
+                            exitTransform: 'scale(0.5) translateY(-50%)'
+                        }}>
+                        <Card>
+                            <CardImg top src={baseUrl + dish.image} alt={dish.name} />
+                            <CardBody>
+                                <CardTitle>{dish.name}</CardTitle>
+                                <CardText>{dish.description}</CardText>
+                            </CardBody>
+                        </Card>
+                    </FadeTransform>
                 </div>
             );
         else
@@ -126,17 +132,25 @@ import { Link } from 'react-router-dom';
             );
     }
 
-    function RenderComments({comments, addComment, dishId}) {
-        const cmnts = comments.map((cmnt)=> {
-            return (
-                <p>{cmnt.comment}<br/><br/>--{cmnt.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(cmnt.date)))} </p>
-            );
-        });
+    function RenderComments({comments, postComment, dishId}) {
         return(
             <div>
                 <h4>Comments</h4>
-                {cmnts}
-                <Commentform dishId={dishId} addComment={addComment} />
+                <ul className="list-unstyled">
+                    <Stagger in>
+                        {comments.map((comment) => {
+                            return (
+                                <Fade in>
+                                    <li key={comment.id}>
+                                        <p>{comment.comment}</p>
+                                        <p>-- {comment.author} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}</p>
+                                    </li>
+                                </Fade>
+                            );
+                        })}
+                    </Stagger>
+                </ul>
+                <Commentform dishId={dishId} postComment={postComment} />
             </div>
         );
     }
@@ -182,7 +196,7 @@ import { Link } from 'react-router-dom';
                             </div>
                             <div className="col-12 col-md-5 m-1">
                                 <RenderComments comments={props.comments}
-                                                addComment={props.addComment}
+                                                postComment={props.postComment}
                                                 dishId={props.dish.id}/>
                             </div>
                         </div>
